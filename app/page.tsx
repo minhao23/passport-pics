@@ -13,10 +13,9 @@ export default function PassportPage() {
   const [resultUrl, setResultUrl] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
+  const [country, setCountry] = useState<string>("Singapore");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // --- EVENT HANDLERS ---
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -37,7 +36,6 @@ export default function PassportPage() {
     setError(null);
 
     try {
-      // Call your FastAPI backend!
       const processedUrl = await processPassportImage(selectedFile);
       setResultUrl(processedUrl);
     } catch (err: any) {
@@ -71,14 +69,14 @@ export default function PassportPage() {
         <div className="grid lg:grid-cols-2 gap-16 items-start">
           
           {/* Left Side: The Image Preview Area */}
-          <div className="relative group">
+          <div className="relative group ">
             <div className="absolute -inset-1 bg-gradient-to-r from-green-500 to-blue-600 rounded-lg blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
             <div className="relative aspect-[4/3] bg-[#0d1117] border border-white/10 rounded-lg flex flex-col items-center justify-center p-2 text-center overflow-hidden">
               
               {isLoading ? (
                 <div className="animate-pulse flex flex-col items-center">
                   <div className="w-12 h-12 border-4 border-green-500 border-t-transparent rounded-full animate-spin mb-4"></div>
-                  <p className="text-green-400 font-mono">Running YOLO & Rembg...</p>
+                  <p className="text-green-400 font-mono">Processing...</p>
                 </div>
               ) : resultUrl ? (
                 // Show the processed image from the backend
@@ -131,26 +129,17 @@ export default function PassportPage() {
 
               <div className="space-y-2">
                 <label className="text-xs font-bold uppercase tracking-widest text-gray-500">Select Country</label>
-                <select className="w-full bg-black border border-white/20 rounded-md p-3 focus:border-green-500 outline-none transition">
+                <select 
+                  value={country} 
+                  onChange={(e) => setCountry(e.target.value)}
+                  className="w-full bg-black border border-white/20 rounded-md p-3 focus:border-green-500 outline-none transition"
+                >
                   <option>India</option>
                   <option>USA</option>
                   <option>United Kingdom</option>
                 </select>
               </div>
 
-              <div className="space-y-3">
-                <label className="text-xs font-bold uppercase tracking-widest text-gray-500">Photo Type</label>
-                {[
-                  "Passport 3.5 x 4.5 cm (India)",
-                  "Passport 2 x 2 inch (USA)",
-                  "Visa 2 x 2 inch",
-                ].map((type, i) => (
-                  <label key={i} className="flex items-center gap-3 p-3 rounded-md hover:bg-white/5 cursor-pointer border border-transparent hover:border-white/10 transition">
-                    <input type="radio" name="type" className="accent-green-500" defaultChecked={i === 0} />
-                    <span className="text-sm">{type}</span>
-                  </label>
-                ))}
-              </div>
 
               {/* Error Display */}
               {error && (

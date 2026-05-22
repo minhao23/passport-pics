@@ -1,9 +1,9 @@
-export async function processPassportImage(imageFile: File): Promise<string> {
+export async function processPassportImage(imageFile: File, country: string): Promise<string> {
     const formData = new FormData();
     formData.append("file", imageFile);
 
     try {
-        const response = await fetch("http://127.0.0.1:8000/images/process/", {
+        const response = await fetch(`http://127.0.0.1:8000/images/process/${country}`, {
             method: "POST",
             body: formData, 
         });
