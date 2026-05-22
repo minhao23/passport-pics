@@ -5,6 +5,7 @@ import { BackgroundGrid } from "@/components/BackgroundGrid";
 import { Switchboard } from "@/components/Switchboard";
 
 import { processPassportImage } from "@/app/api"; 
+import { countries } from "@/utils/countries";
 
 export default function PassportPage() {
   // --- STATE MANAGEMENT ---
@@ -36,7 +37,7 @@ export default function PassportPage() {
     setError(null);
 
     try {
-      const processedUrl = await processPassportImage(selectedFile);
+      const processedUrl = await processPassportImage(selectedFile, country);
       setResultUrl(processedUrl);
     } catch (err: any) {
       setError(err.message || "An error occurred while processing.");
@@ -103,7 +104,7 @@ export default function PassportPage() {
                 Command your <span className="text-green-400">Passport.</span>
               </h2>
               <p className="text-gray-400 text-lg">
-                AI-powered compliance for every country workflow, from the editor to the enterprise.
+                Create your passport photo in seconds. Just upload a selfie!
               </p>
             </div>
 
@@ -132,11 +133,10 @@ export default function PassportPage() {
                 <select 
                   value={country} 
                   onChange={(e) => setCountry(e.target.value)}
-                  className="w-full bg-black border border-white/20 rounded-md p-3 focus:border-green-500 outline-none transition"
-                >
-                  <option>India</option>
-                  <option>USA</option>
-                  <option>United Kingdom</option>
+                  className="w-full bg-black border border-white/20 rounded-md p-3 focus:border-green-500 outline-none transition">
+                  {countries.map((c) => (
+                    <option key={c}>{c}</option>
+                  ))}
                 </select>
               </div>
 
