@@ -16,7 +16,7 @@ export const BackgroundGrid = () => {
         }}
       >
         {Array.from({ length: 180 }).map((_, i) => (
-          <div 
+          <div suppressHydrationWarning // React hydration mismatch can cause warnings when using random values in styles. This tells React to ignore this element during hydration.
             key={i}
             className="h-12 w-full border-[0.5px] border-white/5 transition-colors duration-500 hover:bg-white/10"
             style={{
